@@ -1,6 +1,7 @@
-var ul;
+var ul, scene, camera;
 
 function init() {
+  
   var container = document.createElement( 'div' );
   document.body.appendChild( container );
 
@@ -9,6 +10,18 @@ function init() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.vr.enabled = true;
   container.appendChild( renderer.domElement );
+
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color( 0x505050 );
+
+  camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 10 );
+
+  room = new THREE.Mesh(
+    new THREE.BoxBufferGeometry( 6, 6, 6, 8, 8, 8 ),
+    new THREE.MeshBasicMaterial( { color: 0x808080, wireframe: true } )
+  );
+  room.position.y = 3;
+  scene.add( room );
 
   //
 
@@ -21,7 +34,7 @@ function init() {
 
 function render() {
   
-  renderer.setAnimationLoop( render );
+  renderer.render( scene, camera );
 
   var gamepads = navigator.getGamepads && navigator.getGamepads();
 
